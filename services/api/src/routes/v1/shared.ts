@@ -139,6 +139,7 @@ export const ProjectSchema = z.object({
   slug: z.string(),
   description: z.string().nullable(),
   systemVersion: z.string(),
+  builderPlanPolicy: z.enum(["optional", "required"]),
   settings: AnyObject,
   status: z.string(),
   createdAt: DateValue,
@@ -262,6 +263,8 @@ export const ProposalSchema = z.object({
   payload: AnyObject,
   contextMd: z.string(),
   state: z.string(),
+  /** Stable executor failure code when the latest execution attempt failed. */
+  executionError: z.string().nullable().optional(),
   decidedBy: z.string().nullable(),
   decidedAt: DateValue.nullable(),
   expiresAt: DateValue,

@@ -106,6 +106,7 @@ export const projects = pgTable(
     slug: text("slug").notNull(),
     description: text("description"),
     systemVersion: text("system_version").notNull().default("v1"),
+    builderPlanPolicy: text("builder_plan_policy").notNull().default("optional"),
     settings: jsonb("settings").notNull().default(sql`'{}'::jsonb`),
     status: text("status").notNull().default("active"),
     ...timestamps,
@@ -113,6 +114,10 @@ export const projects = pgTable(
   (table) => [
     unique("projects_org_slug_uidx").on(table.orgId, table.slug),
     index("projects_org_idx").on(table.orgId),
+    check(
+      "projects_builder_plan_policy_check",
+      sql`${table.builderPlanPolicy} IN ('optional', 'required')`,
+    ),
   ],
 );
 
